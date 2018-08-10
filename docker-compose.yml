@@ -1,5 +1,11 @@
 version: '3'
 services:
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.2
+  s3:
+    image: andrewgaul/s3proxy
+    environment:
+      - S3PROXY_AUTHORIZATION=none
   web:
     build:
       context: .
@@ -11,3 +17,6 @@ services:
       - "5000:5000"
     volumes:
       - .:/code
+    links:
+      - es
+      - s3
