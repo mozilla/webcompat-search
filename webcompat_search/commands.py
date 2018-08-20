@@ -5,7 +5,7 @@ import click
 from elasticsearch import Elasticsearch
 from github import Github
 
-from webcompat_domains import settings
+from webcompat_search import settings
 
 
 FQDN_REGEX = re.compile(r'\b(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,}\b')

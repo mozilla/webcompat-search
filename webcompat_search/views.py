@@ -3,7 +3,7 @@ from flask.json import jsonify
 
 from elasticsearch import Elasticsearch
 
-from webcompat_domains import settings
+from webcompat_search import settings
 
 
 blueprint = Blueprint('domains', __name__)

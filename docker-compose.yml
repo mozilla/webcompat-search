@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: docker/dev.Dockerfile
     environment:
-      - FLASK_APP=webcompat_domains:create_app
+      - FLASK_APP=webcompat_search:create_app
       - SECRET_KEY=unique-snowflake
     ports:
       - "5000:5000"
