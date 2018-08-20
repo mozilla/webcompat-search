@@ -12,6 +12,8 @@ requests = "*"
 python-decouple = "*"
 gunicorn = "*"
 pygithub = "*"
+elasticsearch = "<7.0.0,>=6.0.0"
+"boto3" = "*"
 
 [requires]
 python_version = "3.6"
