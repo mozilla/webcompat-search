@@ -17,7 +17,7 @@ Then setup the configuration using the following commands (in the toplevel of th
 
 ```
 $ touch .env
-$ echo "<GITHUB_API_TOKEN>" >> .env
+$ echo "GITHUB_API_TOKEN = <GITHUB_API_TOKEN>" >> .env
 ```
 
 You also need to install `docker` and `docker-compose`.
