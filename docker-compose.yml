@@ -4,10 +4,6 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.2
     environment:
       - discovery.type=single-node
-  s3:
-    image: andrewgaul/s3proxy
-    environment:
-      - S3PROXY_AUTHORIZATION=none
   web:
     build:
       context: .
@@ -21,4 +17,3 @@ services:
       - .:/code
     links:
       - es
-      - s3
