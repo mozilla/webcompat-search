@@ -20,7 +20,7 @@ def get_health():
 def get_domain(domain):
     """Query for issues based on domain"""
 
-    es = Elasticsearch([settings.ES_URL])
+    es = Elasticsearch([settings.ES_URL], **settings.ES_KWARGS)
     query = {
         "query": {
             "term": {
