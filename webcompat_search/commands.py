@@ -16,8 +16,8 @@ FQDN_REGEX = re.compile(r'\b(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,}\b')
 def fetch_issues(state):
     """Fetch webcompat issues from Github."""
 
-    GITHUB_OWNER = 'webcompat'
-    GITHUB_REPO = 'web-bugs'
+    GITHUB_OWNER = settings.GITHUB_OWNER
+    GITHUB_REPO = settings.GITHUB_REPO
 
     g = Github(settings.GITHUB_API_TOKEN)
     org = g.get_organization(GITHUB_OWNER)
