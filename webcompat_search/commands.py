@@ -24,7 +24,7 @@ def fetch_issues(state):
     repo = org.get_repo(GITHUB_REPO)
     issues = repo.get_issues(state=state)
 
-    es = Elasticsearch([settings.ES_URL])
+    es = Elasticsearch([settings.ES_URL], **settings.ES_KWARGS)
     es.indices.create(index=settings.ES_WEBCOMPAT_INDEX, ignore=400)
 
     for i in issues:
