@@ -13,6 +13,7 @@ python-decouple = "*"
 gunicorn = "*"
 pygithub = "*"
 elasticsearch = "<7.0.0,>=6.0.0"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.6"
