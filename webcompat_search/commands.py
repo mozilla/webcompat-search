@@ -60,7 +60,6 @@ def fetch_issues(state, since):
     last_updated_timestamp = get_last_updated_timestamp()
     if since or last_updated_timestamp:
         kwargs['since'] = dateutilparse(since or last_updated_timestamp)
-        click.echo(kwargs['since'])
 
     issues = repo.get_issues(**kwargs)
 
