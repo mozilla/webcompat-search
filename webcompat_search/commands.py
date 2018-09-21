@@ -86,3 +86,48 @@ def fetch_issues(state, since):
             id=i.number,
             body=body
         )
+
+
+@click.command()
+@click.option('--start', default=None, help='Paginated list start range')
+@click.option('--end', default=None, help='Paginated list end range')
+def fetch_issues_by_range(start, end):
+    """Fetch webcompat issues from Github by range in ascending updated order."""
+
+    GITHUB_OWNER = settings.GITHUB_OWNER
+    GITHUB_REPO = settings.GITHUB_REPO
+
+    g = Github(settings.GITHUB_API_TOKEN)
+    org = g.get_organization(GITHUB_OWNER)
+    repo = org.get_repo(GITHUB_REPO)
+    kwargs = {
+        'state': 'all',
+        'sort': 'updated',
+        'direction': 'asc'
+    }
+
+    issues = repo.get_issues(**kwargs)
+
+    es = Elasticsearch([settings.ES_URL], **settings.ES_KWARGS)
+    es.indices.create(index=settings.ES_WEBCOMPAT_INDEX, ignore=400)
+
+    for elem in range(int(start), int(end)):
+        i = issues[elem]
+        click.echo('Fetching issue: {}'.format(i.id))
+
+        # Prepare ES document object
+        body = i.raw_data
+
+        # Query issue title and body to extract domains
+        domains = set()
+        domains.update(re.findall(FQDN_REGEX, i.title))
+        domains.update(re.findall(FQDN_REGEX, i.body))
+
+        body.update({'domains': list(domains)})
+
+        es.index(
+            index=settings.ES_WEBCOMPAT_INDEX,
+            doc_type='webcompat_issue',
+            id=i.number,
+            body=body
+        )
