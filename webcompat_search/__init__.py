@@ -17,5 +17,5 @@ def create_app(config_object='webcompat_search.settings'):
 
     # Register custom commands
     app.cli.add_command(commands.fetch_issues)
-
+    app.cli.add_command(commands.last_updated)
     return app
