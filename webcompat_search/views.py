@@ -13,7 +13,14 @@ blueprint = Blueprint('domains', __name__)
 def get_health():
     """Health check endpoint."""
 
-    return jsonify({'status': 'OK'})
+    es = Elasticsearch([settings.ES_URL], **settings.ES_KWARGS)
+    es_health = es.cluster.health()
+    status_code = 200 if es_health['status'] == 'green' else 500
+    healthz = {
+        'ES': es_health
+    }
+
+    return jsonify(healthz), status_code
 
 
 @blueprint.route('/domain/<domain>')
