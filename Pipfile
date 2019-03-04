@@ -5,6 +5,8 @@ name = "pypi"
 
 [dev-packages]
 ipdb = "*"
+ipython = "*"
+black = "==18.9b0"
 
 [packages]
 flask = "*"
