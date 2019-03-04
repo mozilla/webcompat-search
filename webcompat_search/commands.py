@@ -10,7 +10,7 @@ from github import Github
 from webcompat_search import settings
 
 
-FQDN_REGEX = re.compile(r'\b(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,}\b')
+FQDN_REGEX = re.compile(r"\b(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,}\b")
 
 
 def get_last_updated_timestamp():
@@ -19,18 +19,14 @@ def get_last_updated_timestamp():
     es = Elasticsearch([settings.ES_URL], **settings.ES_KWARGS)
 
     last_updated_q = {
-        'sort': [
-            {'updated_at': {'order': 'desc'}}
-        ],
-        'query': {
-            'match_all': {}
-        }
+        "sort": [{"updated_at": {"order": "desc"}}],
+        "query": {"match_all": {}},
     }
     res = es.search(index=settings.ES_WEBCOMPAT_INDEX, body=last_updated_q)
 
     last_updated_timestamp = None
-    if res['hits']['hits']:
-        last_updated_timestamp = res['hits']['hits'][0]['_source']['updated_at']
+    if res["hits"]["hits"]:
+        last_updated_timestamp = res["hits"]["hits"][0]["_source"]["updated_at"]
 
     return last_updated_timestamp
 
@@ -41,8 +37,8 @@ def last_updated():
 
 
 @click.command()
-@click.option('--state', default='all', help='State of GH issues to fetch')
-@click.option('--since', default=None, help='Fetch issues since timestamp (ISO8601)')
+@click.option("--state", default="all", help="State of GH issues to fetch")
+@click.option("--since", default=None, help="Fetch issues since timestamp (ISO8601)")
 def fetch_issues(state, since):
     """Fetch webcompat issues from Github."""
 
@@ -52,14 +48,12 @@ def fetch_issues(state, since):
     g = Github(settings.GITHUB_API_TOKEN)
     org = g.get_organization(GITHUB_OWNER)
     repo = org.get_repo(GITHUB_REPO)
-    kwargs = {
-        'state': state
-    }
+    kwargs = {"state": state}
 
     # Get last updated timestamp
     last_updated_timestamp = get_last_updated_timestamp()
     if since or last_updated_timestamp:
-        kwargs['since'] = dateutilparse(since or last_updated_timestamp)
+        kwargs["since"] = dateutilparse(since or last_updated_timestamp)
 
     issues = repo.get_issues(**kwargs)
 
@@ -68,7 +62,7 @@ def fetch_issues(state, since):
 
     for i in issues:
 
-        click.echo('Fetching issue: {}'.format(i.id))
+        click.echo("Fetching issue: {}".format(i.id))
 
         # Prepare ES document object
         body = i.raw_data
@@ -78,19 +72,19 @@ def fetch_issues(state, since):
         domains.update(re.findall(FQDN_REGEX, i.title))
         domains.update(re.findall(FQDN_REGEX, i.body))
 
-        body.update({'domains': list(domains)})
+        body.update({"domains": list(domains)})
 
         es.index(
             index=settings.ES_WEBCOMPAT_INDEX,
-            doc_type='webcompat_issue',
+            doc_type="webcompat_issue",
             id=i.number,
-            body=body
+            body=body,
         )
 
 
 @click.command()
-@click.option('--start', default=None, help='Paginated list start range')
-@click.option('--end', default=None, help='Paginated list end range')
+@click.option("--start", default=None, help="Paginated list start range")
+@click.option("--end", default=None, help="Paginated list end range")
 def fetch_issues_by_range(start, end):
     """Fetch webcompat issues from Github by range in ascending updated order."""
 
@@ -100,11 +94,7 @@ def fetch_issues_by_range(start, end):
     g = Github(settings.GITHUB_API_TOKEN)
     org = g.get_organization(GITHUB_OWNER)
     repo = org.get_repo(GITHUB_REPO)
-    kwargs = {
-        'state': 'all',
-        'sort': 'updated',
-        'direction': 'asc'
-    }
+    kwargs = {"state": "all", "sort": "updated", "direction": "asc"}
 
     issues = repo.get_issues(**kwargs)
 
@@ -113,7 +103,7 @@ def fetch_issues_by_range(start, end):
 
     for elem in range(int(start), int(end)):
         i = issues[elem]
-        click.echo('Fetching issue: {}'.format(i.id))
+        click.echo("Fetching issue: {}".format(i.id))
 
         # Prepare ES document object
         body = i.raw_data
@@ -123,11 +113,11 @@ def fetch_issues_by_range(start, end):
         domains.update(re.findall(FQDN_REGEX, i.title))
         domains.update(re.findall(FQDN_REGEX, i.body))
 
-        body.update({'domains': list(domains)})
+        body.update({"domains": list(domains)})
 
         es.index(
             index=settings.ES_WEBCOMPAT_INDEX,
-            doc_type='webcompat_issue',
+            doc_type="webcompat_issue",
             id=i.number,
-            body=body
+            body=body,
         )

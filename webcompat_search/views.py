@@ -2,6 +2,7 @@ from flask import Blueprint, url_for
 from flask.json import jsonify
 
 from elasticsearch import Elasticsearch
+from elasticsearch.helpers import scan as es_scan
 
 from webcompat_search import settings
 
@@ -45,5 +46,18 @@ def get_domain(domain):
             }
         }
     }
-    res = es.search(index=settings.ES_WEBCOMPAT_INDEX, body=query)
-    return jsonify(res['hits']['hits'])
+
+    results = es_scan(
+        es,
+        index=settings.ES_WEBCOMPAT_INDEX,
+        query=query,
+        scroll=settings.ES_SCROLL_LIMIT,
+        size=settings.ES_QUERY_SIZE,
+        preserve_order=True
+    )
+
+    docs = []
+    for result in results:
+        docs.append(result['_source'])
+
+    return jsonify(results=docs)

@@ -3,13 +3,13 @@ from flask import Flask
 from webcompat_search import commands, views
 
 
-def create_app(config_object='webcompat_search.settings'):
+def create_app(config_object="webcompat_search.settings"):
     """Flask app factory
 
     :param config_object: The configuration object to use.
     """
 
-    app = Flask('webcompat_search')
+    app = Flask("webcompat_search")
     app.config.from_object(config_object)
 
     # Register app blueprints
