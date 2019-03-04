@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, url_for
 from flask.json import jsonify
 
 from elasticsearch import Elasticsearch
@@ -21,6 +21,16 @@ def get_health():
     }
 
     return jsonify(healthz), status_code
+
+
+@blueprint.route('/', methods=['GET'])
+def get_schema():
+    """API schema"""
+
+    schema = {
+        'search_by_domain': url_for('.get_domain', domain='_domain_')
+    }
+    return jsonify(schema)
 
 
 @blueprint.route('/domain/<domain>')
