@@ -104,4 +104,4 @@ venv.bak/
 .mypy_cache/
 
 # bootstrap-data
-data/bootstrap-es-data.tar
+data/
