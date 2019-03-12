@@ -1,3 +1,4 @@
+import asyncio
 import re
 
 import click
@@ -8,6 +9,7 @@ from elasticsearch import Elasticsearch
 from github import Github
 
 from webcompat_search import settings
+from webcompat_search.prototype_dashboards.data import dump as prototype_dashboards_dump
 
 
 FQDN_REGEX = re.compile(r"\b(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,}\b")
@@ -121,3 +123,13 @@ def fetch_issues_by_range(start, end):
             id=i.number,
             body=body,
         )
+
+
+@click.command()
+def reindex_prototype_dashboard_data():
+    """Re-index data generated for prototype dashboards"""
+
+    click.echo("Re-index data generated for prototype dashboards")
+    loop = asyncio.get_event_loop()
+    output = loop.run_until_complete(prototype_dashboards_dump())
+    click.echo("Done!")
