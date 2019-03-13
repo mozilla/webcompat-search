@@ -21,6 +21,7 @@ pandas = "*"
 pytz = "*"
 aioelasticsearch = "*"
 typing = "*"
+tld = "*"
 
 [requires]
 python_version = "3.6"

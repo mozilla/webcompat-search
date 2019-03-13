@@ -7,6 +7,7 @@ from dateutil.parser import parse as dateutilparse
 
 from elasticsearch import Elasticsearch
 from github import Github
+from tld import get_tld
 
 from webcompat_search import settings
 from webcompat_search.prototype_dashboards.data import dump as prototype_dashboards_dump
@@ -31,6 +32,17 @@ def get_last_updated_timestamp():
         last_updated_timestamp = res["hits"]["hits"][0]["_source"]["updated_at"]
 
     return last_updated_timestamp
+
+
+def get_valid_domains(domains):
+    """Return list of domains with valid TLDs"""
+    valid_domains = []
+    for domain in domains:
+        res = get_tld(domain, fail_silently=True, fix_protocol=True)
+        if res:
+            if not (domain.endswith('webcompat.com') or domain.endswith('githubusercontent.com')):
+                valid_domains.append(domain)
+    return valid_domains
 
 
 @click.command()
@@ -75,6 +87,7 @@ def fetch_issues(state, since):
         domains.update(re.findall(FQDN_REGEX, i.body))
 
         body.update({"domains": list(domains)})
+        body.update({"valid_domains": get_valid_domains(list(domains))})
 
         es.index(
             index=settings.ES_WEBCOMPAT_INDEX,
@@ -116,6 +129,7 @@ def fetch_issues_by_range(start, end):
         domains.update(re.findall(FQDN_REGEX, i.body))
 
         body.update({"domains": list(domains)})
+        body.update({"valid_domains": get_valid_domains(list(domains))})
 
         es.index(
             index=settings.ES_WEBCOMPAT_INDEX,
