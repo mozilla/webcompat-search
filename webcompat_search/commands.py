@@ -40,7 +40,10 @@ def get_valid_domains(domains):
     for domain in domains:
         res = get_tld(domain, fail_silently=True, fix_protocol=True)
         if res:
-            if not (domain.endswith('webcompat.com') or domain.endswith('githubusercontent.com')):
+            if not (
+                domain.endswith("webcompat.com")
+                or domain.endswith("githubusercontent.com")
+            ):
                 valid_domains.append(domain)
     return valid_domains
 

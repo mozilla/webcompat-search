@@ -17,7 +17,10 @@ from typing import List
 from urllib.parse import urlencode
 
 from webcompat_search import settings
-from webcompat_search.settings import BUGZILLA_DUPED_INDEX, BUGZILLA_PARTNER_REGRESSION_BUGS
+from webcompat_search.settings import (
+    BUGZILLA_DUPED_INDEX,
+    BUGZILLA_PARTNER_REGRESSION_BUGS,
+)
 
 ES_HOST = "127.0.0.1:9200"
 
