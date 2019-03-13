@@ -16,18 +16,22 @@ from dateutil.rrule import rrule, DAILY
 from typing import List
 from urllib.parse import urlencode
 
+from webcompat_search import settings
+from webcompat_search.settings import BUGZILLA_DUPED_INDEX, BUGZILLA_PARTNER_REGRESSION_BUGS
 
 ES_HOST = "127.0.0.1:9200"
-BUGZILLA_DUPED_INDEX = "bugzilla_duped"
-BUGZILLA_PARTNER_REGRESSION_BUGS = "bugzilla_regression_partners"
 
 
-with open(os.path.join(os.path.dirname(__file__), "world_ranks.json")) as f:
+world_ranks_path = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "fixtures/world_ranks.json"
+)
+
+with open(world_ranks_path, "r") as f:
     world_ranks = json.load(f)
 
 
 async def load_issues():
-    async with Elasticsearch(ES_HOST) as es:
+    async with Elasticsearch(hosts=[settings.ES_URL], **settings.ES_KWARGS) as es:
         async with Scan(
             es,
             query={"query": {"match_all": {}}},
@@ -60,7 +64,7 @@ async def load_issues():
 
 
 async def update_index(result):
-    async with Elasticsearch(ES_HOST) as es:
+    async with Elasticsearch(hosts=[settings.ES_URL], **settings.ES_KWARGS) as es:
         # Wipe indices
         delete_query = {"query": {"match_all": {}}}
 

@@ -19,4 +19,5 @@ def create_app(config_object="webcompat_search.settings"):
     app.cli.add_command(commands.fetch_issues)
     app.cli.add_command(commands.last_updated)
     app.cli.add_command(commands.fetch_issues_by_range)
+    app.cli.add_command(commands.reindex_prototype_dashboard_data)
     return app

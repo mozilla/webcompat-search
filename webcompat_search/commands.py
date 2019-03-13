@@ -131,5 +131,5 @@ def reindex_prototype_dashboard_data():
 
     click.echo("Re-index data generated for prototype dashboards")
     loop = asyncio.get_event_loop()
-    output = loop.run_until_complete(prototype_dashboards_dump())
+    loop.run_until_complete(prototype_dashboards_dump())
     click.echo("Done!")
