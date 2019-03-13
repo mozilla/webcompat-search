@@ -79,25 +79,28 @@ def fetch_issues(state, since):
 
     for i in issues:
 
-        click.echo("Fetching issue: {}".format(i.id))
+        try:
+            click.echo("Fetching issue: {}".format(i.id))
 
-        # Prepare ES document object
-        body = i.raw_data
+            # Prepare ES document object
+            body = i.raw_data
 
-        # Query issue title and body to extract domains
-        domains = set()
-        domains.update(re.findall(FQDN_REGEX, i.title))
-        domains.update(re.findall(FQDN_REGEX, i.body))
+            # Query issue title and body to extract domains
+            domains = set()
+            domains.update(re.findall(FQDN_REGEX, i.title))
+            domains.update(re.findall(FQDN_REGEX, i.body))
 
-        body.update({"domains": list(domains)})
-        body.update({"valid_domains": get_valid_domains(list(domains))})
+            body.update({"domains": list(domains)})
+            body.update({"valid_domains": get_valid_domains(list(domains))})
 
-        es.index(
-            index=settings.ES_WEBCOMPAT_INDEX,
-            doc_type="webcompat_issue",
-            id=i.number,
-            body=body,
-        )
+            es.index(
+                index=settings.ES_WEBCOMPAT_INDEX,
+                doc_type="webcompat_issue",
+                id=i.number,
+                body=body,
+            )
+        except:
+            continue
 
 
 @click.command()
