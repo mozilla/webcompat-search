@@ -16,6 +16,11 @@ gunicorn = "*"
 pygithub = "*"
 elasticsearch = "<7.0.0,>=6.0.0"
 python-dateutil = "*"
+attrs = "*"
+pandas = "*"
+pytz = "*"
+aioelasticsearch = "*"
+typing = "*"
 
 [requires]
 python_version = "3.6"
