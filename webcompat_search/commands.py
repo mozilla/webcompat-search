@@ -48,6 +48,27 @@ def get_valid_domains(domains):
     return valid_domains
 
 
+def get_parsed_url(body):
+    """Search for regex to match **URL** in body"""
+
+    o = re.search("\*\*URL\*\*\:\ (.*)", body)  # noqa
+    parsed_url = {"scheme": "", "netloc": "", "path": "", "fragment": ""}
+
+    if o:
+        url = o.groups()[0]
+        try:
+            tld = get_tld(url, fix_protocol=True, fail_silently=True, as_object=True)
+            parsed_url = {
+                "scheme": tld.parsed_url.scheme,
+                "netloc": tld.parsed_url.netloc,
+                "path": tld.parsed_url.path,
+                "fragment": tld.parsed_url.fragment,
+            }
+        except Exception:
+            click.echo("Something went wrong when parsing URL: {}".format(url))
+    return parsed_url
+
+
 @click.command()
 def last_updated():
     click.echo(get_last_updated_timestamp())
@@ -92,14 +113,14 @@ def fetch_issues(state, since):
 
             body.update({"domains": list(domains)})
             body.update({"valid_domains": get_valid_domains(list(domains))})
-
+            body.update({"parsed_url": get_parsed_url(i.body)})
             es.index(
                 index=settings.ES_WEBCOMPAT_INDEX,
                 doc_type="webcompat_issue",
                 id=i.number,
                 body=body,
             )
-        except:
+        except Exception:
             continue
 
 
