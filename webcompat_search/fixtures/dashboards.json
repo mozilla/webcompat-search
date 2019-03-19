@@ -1,0 +1,38 @@
+{
+    "frequently-duped-bugs": {
+        "name": "Frequently duped bugzilla bugs",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/e387cc80-4670-11e9-8d67-95a0aae34668?_g=()&embed=True"
+    },
+    "issues-by-domain": {
+        "name": "Issues by domain",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/13b35780-4671-11e9-8d67-95a0aae34668?_g=()&embed=True"
+    },
+    "partner-regressions": {
+        "name": "Partner regressions",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/f288c520-466d-11e9-8d67-95a0aae34668?_g=()&embed=True"
+    },
+    "top-sites-dashboard": {
+        "name": "Top sites dashboard",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/159209a0-4a42-11e9-8bee-d9a4fdc07f05?_g=()&embed=True"
+    },
+    "top-sites-webcompat-charts-combined": {
+        "name": "Top sites - webcompat charts - combined",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/73dbbe10-4a2f-11e9-a4d0-090fbf2396f5?_g=()&embed=True"
+    },
+    "top-sites-webcompat-charts-needsdiagnosis": {
+        "name": "Top sites - webcompat charts - needsdiagnosis",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/03d1fd90-4a30-11e9-a4d0-090fbf2396f5?_g=()&embed=True"
+    },
+    "top-sites-webcompat-charts-open": {
+        "name": "Top sites - webcompat charts - open",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/86fa4de0-4a2f-11e9-a4d0-090fbf2396f5?_g=()&embed=True"
+    },
+    "top-sites-webcompat-charts-severity-critical": {
+        "name": "Top sites - webcompat charts - severitycritical",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/a4ab9f60-4a2f-11e9-a4d0-090fbf2396f5?_g=()&embed=True"
+    },
+    "top-sites-webcompat-charts-sitewait": {
+        "name": "Top sites - webcompat charts - sitewait",
+        "url": "https://webcompat-kibana.herokuapp.com/app/kibana#/dashboard/bca99720-4a2f-11e9-a4d0-090fbf2396f5?_g=()&embed=True"
+    }
+}
