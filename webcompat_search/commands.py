@@ -157,6 +157,7 @@ def fetch_issues_by_range(start, end):
 
         body.update({"domains": list(domains)})
         body.update({"valid_domains": get_valid_domains(list(domains))})
+        body.update({"parsed_url": get_parsed_url(i.body)})
 
         es.index(
             index=settings.ES_WEBCOMPAT_INDEX,
