@@ -22,6 +22,7 @@ pytz = "*"
 aioelasticsearch = "*"
 typing = "*"
 tld = "*"
+requests-html = "*"
 
 [requires]
 python_version = "3.6"
