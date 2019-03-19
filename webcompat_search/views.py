@@ -38,7 +38,7 @@ def get_domain(domain):
     """Query for issues based on domain"""
 
     es = Elasticsearch([settings.ES_URL], **settings.ES_KWARGS)
-    query = {"query": {"term": {"domains": domain}}}
+    query = {"query": {"term": {"parsed_url.netloc.keyword": domain}}}
 
     results = es_scan(
         es,
