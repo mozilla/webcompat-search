@@ -32,10 +32,10 @@ def get_bugzilla_webcompat_stats(website):
     except:
         count = 0
 
-    parsed_url = {
-        "scheme": "",
-        "netloc": website,
-        "path": "",
-        "fragment": ""
+    parsed_url = {"scheme": "", "netloc": website, "path": "", "fragment": ""}
+    return {
+        "site": website,
+        "url": query,
+        "bugs_count": count,
+        "parsed_url": parsed_url,
     }
-    return {"site": website, "url": query, "bugs_count": count, "parsed_url": parsed_url}

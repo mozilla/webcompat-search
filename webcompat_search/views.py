@@ -1,3 +1,6 @@
+import json
+import os
+
 from flask import Blueprint, url_for
 from flask.json import jsonify
 
@@ -51,3 +54,15 @@ def get_domain(domain):
         docs.append(result["_source"])
 
     return jsonify(results=docs)
+
+
+@blueprint.route("/dashboards/")
+def get_dashboards():
+    """Return list of available dashboards"""
+
+    path = os.path.dirname(os.path.abspath(__file__))
+
+    with open(os.path.join(path, "fixtures/dashboards.json"), "r") as f:
+        dashboards = json.load(f)
+
+    return jsonify(dashboards)
