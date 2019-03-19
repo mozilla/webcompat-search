@@ -1,4 +1,5 @@
 import asyncio
+import json
 import re
 
 import click
@@ -11,6 +12,7 @@ from tld import get_tld
 
 from webcompat_search import settings
 from webcompat_search.prototype_dashboards.data import dump as prototype_dashboards_dump
+from webcompat_search.prototype_dashboards.bugzilla import get_bugzilla_webcompat_stats
 
 
 FQDN_REGEX = re.compile(r"\b(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,}\b")
@@ -175,3 +177,24 @@ def reindex_prototype_dashboard_data():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(prototype_dashboards_dump())
     click.echo("Done!")
+
+
+@click.command()
+def fetch_bugzilla_bugcount():
+    click.echo("Fetching bugzilla webcompat bug count")
+
+    with open("webcompat_search/fixtures/top_sites.json", "r") as f:
+        top_sites = json.load(f)["top_sites"]
+
+    es = Elasticsearch([settings.ES_URL], **settings.ES_KWARGS)
+    es.indices.create(index=settings.BUGZILLA_TOP_SITES_COUNT_INDEX, ignore=400)
+
+    for site in top_sites:
+        click.echo("Site: {}".format(site))
+        stats = get_bugzilla_webcompat_stats(site)
+        es.index(
+            index=settings.BUGZILLA_TOP_SITES_COUNT_INDEX,
+            doc_type="webcompat_top_bugcount",
+            id=stats["site"],
+            body=stats,
+        )

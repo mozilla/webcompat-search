@@ -18,3 +18,6 @@ BUGZILLA_DUPED_INDEX = config("BUGZILLA_DUPED_INDEX", default="bugzilla_duped")
 BUGZILLA_PARTNER_REGRESSION_BUGS = config(
     "BUGZILLA_PARTNER_REGRESSION_BUGS", default="bugzilla_regression_partners"
 )
+BUGZILLA_TOP_SITES_COUNT_INDEX = config(
+    "BUGZILLA_COUNT_INDEX", default="bugzilla_top_sites_count"
+)
