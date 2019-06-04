@@ -70,6 +70,16 @@ def get_parsed_url(body):
             click.echo("Something went wrong when parsing URL: {}".format(url))
     return parsed_url
 
+def get_extracted_fields(body):
+    """Extract the @key: value fields"""
+
+    pattern = "<!-- @(.*): (.*) -->"
+    o = re.findall(pattern, body)
+    partial_doc = {}
+    if o:
+        for key, value in o:
+            partial_doc['extracted_{}'.format(key)] = value
+    return partial_doc
 
 @click.command()
 def last_updated():
@@ -116,6 +126,7 @@ def fetch_issues(state, since):
             body.update({"domains": list(domains)})
             body.update({"valid_domains": get_valid_domains(list(domains))})
             body.update({"parsed_url": get_parsed_url(i.body)})
+            body.update(get_extracted_fields())
             es.index(
                 index=settings.ES_WEBCOMPAT_INDEX,
                 doc_type="webcompat_issue",
