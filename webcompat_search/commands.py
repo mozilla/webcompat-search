@@ -126,7 +126,7 @@ def fetch_issues(state, since):
             body.update({"domains": list(domains)})
             body.update({"valid_domains": get_valid_domains(list(domains))})
             body.update({"parsed_url": get_parsed_url(i.body)})
-            body.update(get_extracted_fields())
+            body.update(get_extracted_fields(i.body))
             es.index(
                 index=settings.ES_WEBCOMPAT_INDEX,
                 doc_type="webcompat_issue",
@@ -134,7 +134,7 @@ def fetch_issues(state, since):
                 body=body,
             )
         except Exception as e:
-            click.echo(str(e))
+            click.echo(str(e), error=True)
             continue
 
 
