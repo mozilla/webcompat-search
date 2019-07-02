@@ -133,7 +133,8 @@ def fetch_issues(state, since):
                 id=i.number,
                 body=body,
             )
-        except Exception:
+        except Exception as e:
+            click.echo(str(e))
             continue
 
 
