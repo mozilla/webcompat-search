@@ -115,12 +115,14 @@ def fetch_issues(state, since):
 
             # Prepare ES document object
             body = i.raw_data
+            events = i.get_events()
 
             # Query issue title and body to extract domains
             domains = set()
             domains.update(re.findall(FQDN_REGEX, i.title))
             domains.update(re.findall(FQDN_REGEX, i.body))
 
+            body.update({"events": events})
             body.update({"domains": list(domains)})
             body.update({"valid_domains": get_valid_domains(list(domains))})
             body.update({"parsed_url": get_parsed_url(i.body)})
