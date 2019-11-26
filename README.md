@@ -3,7 +3,7 @@ webcompat-search
 
 Description
 -------------
-Web service to expose HTTP API that allows searching webcompat issues based on:
+Utility to help with common tasks related to webcompat ES:
 
 * flask
 * elasticsearch
