@@ -19,10 +19,7 @@ python-dateutil = "*"
 attrs = "*"
 pandas = "*"
 pytz = "*"
-aioelasticsearch = "*"
-typing = "*"
 tld = "*"
-requests-html = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
