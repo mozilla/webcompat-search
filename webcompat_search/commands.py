@@ -1,6 +1,7 @@
 import re
 
 import click
+import requests
 
 from dateutil.parser import parse as dateutilparse
 
@@ -115,14 +116,17 @@ def fetch_issues(state, since):
 
             # Prepare ES document object
             body = i.raw_data
-            events = i.get_events()
+            headers = {'Authorization': 'token {}'.format(settings.GITHUB_API_TOKEN)}
+            response = requests.get(body['events_url'], headers=headers)
+            response.raise_for_status()
+            events_raw = response.json()
 
             # Query issue title and body to extract domains
             domains = set()
             domains.update(re.findall(FQDN_REGEX, i.title))
             domains.update(re.findall(FQDN_REGEX, i.body))
 
-            body.update({"events": events})
+            body.update({"events": events_raw})
             body.update({"domains": list(domains)})
             body.update({"valid_domains": get_valid_domains(list(domains))})
             body.update({"parsed_url": get_parsed_url(i.body)})
