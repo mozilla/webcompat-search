@@ -116,8 +116,8 @@ def fetch_issues(state, since):
 
             # Prepare ES document object
             body = i.raw_data
-            headers = {'Authorization': 'token {}'.format(settings.GITHUB_API_TOKEN)}
-            response = requests.get(body['events_url'], headers=headers)
+            headers = {"Authorization": "token {}".format(settings.GITHUB_API_TOKEN)}
+            response = requests.get(body["events_url"], headers=headers)
             response.raise_for_status()
             events_raw = response.json()
 
